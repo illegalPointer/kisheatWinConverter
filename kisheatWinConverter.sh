@@ -1,6 +1,6 @@
 #!/bin/sh
 # Fix to naming problem with kisheat.py when working on Windows environments
-# github.com/illegalPointere/kisheatWinConverter
+# github.com/illegalPointer/kisheatWinConverter
 
 numArgs=1
 
