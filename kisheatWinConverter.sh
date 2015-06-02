@@ -22,25 +22,30 @@ do
     oldImageName=$(echo "$line" | sed 's/<\/\?href>//g;s/ //g')
     kmlNewImageName=$(echo "$line" | sed 's/:/_/g')
     newImageName=$(echo "$oldImageName" | sed 's/:/_/g')
-    echo "$kmlNewImageName" >> "$kmlFile""TEMP"
-    #mv $1$oldImageName $1$newImageName
+    if [ -f $1$oldImageName ]
+    then
+     echo "$kmlNewImageName" >> "$kmlFile""TEMP"
+     mv $1$oldImageName $1$newImageName
+    else
+     rm "$kmlFile"
+     rm "$kmlFile""TEMP"
+     break
+    fi
     ;;
    *)
     echo "$line" >> "$kmlFile""TEMP"
     ;;
   esac
  done
- #Check if Image was created. if not, remove the kml File
- if [ -f $1$oldImageName ]
+ if [ -f "$kmlFile""TEMP" ]
  then
-  mv $1$oldImageName $1$newImageName
   echo "</kml>" >> "$kmlFile""TEMP"
   mv "$kmlFile""TEMP" "$kmlFile"
   newKmlFile=$(echo "$kmlFile" | sed 's/:/_/g')
-  mv "$kmlFile" "$newKmlFile"
- else
-  rm "$kmlFile" 
-  rm "$kmlFile""TEMP"
+  if [ "$kmlFile" != "$newKmlFile" ];
+  then
+   mv "$kmlFile" "$newKmlFile"
+  fi
  fi
 done
 
